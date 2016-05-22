@@ -1,0 +1,10 @@
+---
+# tasks file for sa-helper-web-deploy
+
+
+  - include: tasks_initialize_mysql.yml
+    when: mysql_init_files is defined
+
+  - include: tasks_initialize_startup.yml
+
+  - include: tasks_initialize_nginx.yml

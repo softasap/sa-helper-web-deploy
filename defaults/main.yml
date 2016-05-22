@@ -1,0 +1,39 @@
+---
+# defaults file for sa-helper-web-deploy
+  deploy_user: "{{ansible_user_id}}"
+  role_dir: "{{role_path}}"
+  root_dir: "{{role_path}}"
+
+  # mysql_init_files:
+      # - {
+      #   name: schema.sql,
+      #   path: "{{root_dir}}/db",
+      #   db: app_db
+      #   }
+      # - {
+      #   name: initial.sql,
+      #   path: "{{root_dir}}/db",
+      #   db: app_db
+      #   }
+
+  # deliveries:
+  #   - {
+  #       name: "app",
+  #       dest_folder: '/var/www/node_app',
+  #       artifact_file: 'nodeapp-0.0.1.tgz',
+  #       source: {
+  #         path: "{{root_dir}}",
+  #         type: copy
+  #       },
+  #       packages: ['npm'],
+  #       upstart: {
+  #         name: app,
+  #         description: "node application",
+  #         workingdirectory: "/var/www/node_app",
+  #         env: {
+  #           HOME: "/var/www/node_app",
+  #           EXTRA_PARAMETERS: ""
+  #           },
+  #         execstart: "start-stop-daemon --chdir ${HOME} --start --pid=/var/run/app.pid --exec /usr/bin/node -- server ${EXTRA_PARAMETERS}"
+  #         }
+  #     }

@@ -1,0 +1,22 @@
+---
+  - debug: var="nginx_config"
+  - debug: msg="templating /etc/nginx/sites-available/{{item.app_domain|default('default')}} from {{role_dir}}/templates/nginx/node.j2 (overrided - {{nginx_template | default('no')}})"
+    with_items:
+      - "{{nginx_config}}"
+
+  - name: NGINX | Copy Nginx configuration
+    template: src={{role_dir}}/templates/nginx/node.j2 dest=/etc/nginx/sites-available/{{item.app_domain|default('default')}} backup=yes
+    when: nginx_template is not defined
+    with_items:
+      - "{{nginx_config}}"
+    become: yes
+    tags:
+      - nginx
+
+  - name: NGINX | Enable website
+    command: ln -fs /etc/nginx/sites-available/{{app_domain}} /etc/nginx/sites-enabled/{{item.app_domain|default('default')}}
+    become: yes
+    with_items:
+      - "{{nginx_config}}"
+    tags:
+      - nginx

@@ -1,0 +1,28 @@
+---
+  - name: Web Deploy | Create destination dirs
+    file: path="{{item.dest_folder}}" state="directory" owner="{{ansible_user_id}}"
+    become: yes
+    with_items: "{{ deliveries | default([]) }}"
+    tags:
+      - deploy
+
+  - name: Web Deploy | Upload artifacts, if any
+    copy: src="{{item.source.path}}/{{item.artifact_file}}" dest="/home/{{ansible_user_id}}/" mode=0644
+    when: item.source.type=='copy' and item.artifact_file is defined
+    with_items: "{{deliveries | default([])}}"
+    tags:
+      - deploy
+
+  - name: Web Deploy | Unpack artifacts, if any
+    unarchive: src="/home/{{ansible_user_id}}/{{item.artifact_file}}" dest="{{item.dest_folder}}" copy="no"
+    when: item.artifact_file is defined
+    with_items: "{{deliveries | default([])}}"
+    tags:
+      - deploy
+
+  - name: Web Deploy | Perform npm packages initializations
+    npm: path="{{item.dest_folder}}"
+    when: item.packages is defined and 'npm' in item.packages|default([])
+    with_items: "{{deliveries | default([])}}"
+    tags:
+      - deploy

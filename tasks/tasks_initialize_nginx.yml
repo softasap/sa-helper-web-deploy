@@ -1,0 +1,7 @@
+---
+  - name: Web Deploy | initialize nginx, if any
+    include: use/__nginx_site.yml nginx_config="{{item.nginx}}" nginx_site_name="{{item.app_domain|default('default')}}"
+    when: item.nginx is defined
+    with_items: "{{deliveries | default([])}}"
+    tags:
+      - deploy

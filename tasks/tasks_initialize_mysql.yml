@@ -1,0 +1,20 @@
+---
+  - name: MySQL IMPORT | upload script
+    copy: src="{{item.path}}/{{item.name}}" dest=/tmp
+    with_items: "{{mysql_init_files | default([])}}"
+    tags:
+      - mysql
+
+  - name: MySQL IMPORT | execute script
+    mysql_db:
+      name: "{{ item.db }}"
+      collation: "{{ item.collation | default('utf8_general_ci') }}"
+      encoding: "{{ item.encoding | default('utf8') }}"
+      state: import
+      target: "/tmp/{{item.name}}"
+      login_host: "{{mysql_host | default('localhost')}}"
+      login_user: "{{mysql_root_user | default('root')}}"
+      login_password: "{{mysql_root_password | default('devroot')}}"
+    with_items: "{{mysql_init_files | default([])}}"
+    tags:
+      - mysql

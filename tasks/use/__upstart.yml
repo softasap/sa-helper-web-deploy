@@ -1,0 +1,12 @@
+---
+  - debug: var="upstart_config"
+  - debug: msg="templating /etc/init/{{upstart_name}}.conf from {{role_dir}}/templates/start/upstart.conf.j2 (overrided - {{upstart_template | default('no')}})"
+    with_items:
+      - "{{upstart_config}}"
+      
+  - name: UPSTART | Template upstart script
+    template: src="{{role_dir}}/templates/start/upstart.conf.j2" dest="/etc/init/{{item.name}}.conf"
+    when: upstart_template is not defined
+    become: yes
+    with_items:
+      - "{{upstart_config}}"

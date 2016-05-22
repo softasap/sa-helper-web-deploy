@@ -1,0 +1,8 @@
+---
+
+  - name: Web Deploy | initialize upstart, if any
+    include: use/__upstart.yml upstart_config="{{item.upstart}}" upstart_name="{{item.name}}"
+    when: item.upstart is defined
+    with_items: "{{deliveries | default([])}}"
+    tags:
+      - deploy
