@@ -1,0 +1,15 @@
+  - name: DEPLOY MYSQL USER | Create user
+    mysql_user:
+      name: "{{ step_config.mysql_user_name }}"
+      host: "{{ step_config.mysql_user_host | default('localhost') }}"
+      password: "{{ step_config.mysql_user_password}}"
+      priv: "{{ step_config.mysql_user_priv | default('*.*:USAGE') }}"
+      state: "{{ step_config.mysql_user_state | default('present') }}"
+      append_privs: "{{ step_config.mysql_user_append_privs | default('no') }}"
+      login_host: "{{step_config.login_host | default('localhost')}}"
+      login_user: "{{step_config.login_user | default('root')}}"
+      login_password: "{{step_config.login_password | default('devroot')}}"
+#    no_log: true
+    tags:
+      - mysql
+

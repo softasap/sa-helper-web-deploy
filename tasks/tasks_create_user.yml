@@ -1,0 +1,17 @@
+  - name: DEPLOY USER | Create deploy user group
+    group: name="{{ step_config.deploy_user }}" state="present"
+    become: yes
+    tags:
+      - create_user
+
+  - name: DEPLOY USER | Create deploy user
+    user:
+      name: "{{ step_config.deploy_user }}"
+      group: "{{ step_config.deploy_user }}"
+      comment: "{{ step_config.deploy_user_comment | default(omit) }}"
+      shell: "{{ step_config.deploy_user_shell | default('/bin/nologin') }}"
+      createhome: "{{ step_config.deploy_user_createhome | default(false) }}"
+    become: yes
+    tags:
+      - create_user
+

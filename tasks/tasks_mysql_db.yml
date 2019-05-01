@@ -1,0 +1,12 @@
+  - name: DEPLOY MYSQL DB | Create database
+    mysql_db:
+      name: "{{ step_config.mysql_db_name }}"
+      collation: "{{ step_config.mysql_db_collation | default('utf8_general_ci') }}"
+      encoding: "{{ step_config.mysql_db_encoding | default('utf8') }}"
+      state: present
+      login_host: "{{step_config.login_host | default('localhost')}}"
+      login_user: "{{step_config.login_user | default('root')}}"
+      login_password: "{{step_config.login_password | default('devroot')}}"
+    tags:
+      - mysql
+
